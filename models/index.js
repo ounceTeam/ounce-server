@@ -10,10 +10,6 @@ const sequelize = new Sequelize(
   config
 );
 
-// db.Image = require("./image")(sequelize, Sequelize);
-// db.Post = require("./post")(sequelize, Sequelize);
-// db.User = require("./user")(sequelize, Sequelize);
-// db.Store = require("./store")(sequelize, Sequelize);
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

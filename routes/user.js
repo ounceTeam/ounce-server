@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 router.get("/", (req, res) => {
-    
-    
+  
     return res.send("user server get api");
+
   });
 
 router.post('/', async (req, res, next) => {
 
-    //시퀄라이즈 때문에 대충 이런식으로 한다고만 올려둔거에요 알아서 로직 바꿔서 로그인 짜시면 될거같습니다.
+    //시퀄라이즈 때문에 대충 이런식으로 한다고만 올려둔거에요 알아서 로직 바꿔서 로그인 짜시면 될거같습니다.이부분은 다 지우고 하셔도 상관없어요.
 
     try {
         const exUser = await db.User.findOne({

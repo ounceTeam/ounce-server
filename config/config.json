@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "tkfkd11!!",
+    "password": "",
     "database": "ounce",
     "host": "127.0.0.1",
     "dialect": "mysql"
