@@ -1,2 +1,3 @@
-node_modules
-secret.js
+/node_modules
+/configure/secret.js
+/configure/config.json
