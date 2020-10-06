@@ -3,17 +3,23 @@ module.exports = (sequelize, DataTypes) => {
       "User",
       {
         // 테이블명은 users
-        nickname: {
-          type: DataTypes.STRING(20), 
-          allowNull: false // 필수
+        userNo: {
+          type: DataTypes.INTEGER,
+          allowNull: false, // 필수
+          autoIncrement: true,
+          primaryKey: true
         },
-        userId: {
-          type: DataTypes.STRING(20),
+        email: {
+          type: DataTypes.STRING(50),
           allowNull: false,
           unique: true // 고유한 값
         },
-        password: {
-          type: DataTypes.STRING(100), 
+        nickname: {
+          type: DataTypes.STRING(10),
+          allowNull: false
+        },
+        oauthid: {
+          type: DataTypes.STRING(100),
           allowNull: false
         }
       },
