@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
 );
 
 db.User = require("./user")(sequelize, Sequelize);
-// db.Post = require("./post")(sequelize, Sequelize);
+db.Post = require("./post")(sequelize, Sequelize);
 // db.Image = require("./image")(sequelize, Sequelize);
 // db.Group = require("./group")(sequelize, Sequelize);
 
