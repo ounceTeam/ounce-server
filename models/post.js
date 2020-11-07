@@ -2,13 +2,14 @@ module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define(
     "Post",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       // 테이블명은 posts
       content: {
         type: DataTypes.TEXT, // 매우 긴 글
-        allowNull: false,
-      },
-      rate: {
-        type: DataTypes.FLOAT,
         allowNull: false,
       },
     },
@@ -20,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
   );
   Post.associate = (db) => {
     db.Post.belongsTo(db.User); // 테이블에 UserId 컬럼이 생겨요
-    db.Post.belongsTo(db.Store);
+    db.Post.belongsTo(db.Group);
     db.Post.hasMany(db.Image);
-    //db.Post.belongsToMany(db.User, { through: "Like", as: "Likers" });
+    //   //db.Post.belongsToMany(db.User, { through: "Like", as: "Likers" });
   };
   return Post;
 };

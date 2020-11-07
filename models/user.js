@@ -3,11 +3,14 @@ module.exports = (sequelize, DataTypes) => {
     "User",
     {
       // 테이블명은 users
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       userNo: {
         type: DataTypes.INTEGER,
         allowNull: false, // 필수
-        autoIncrement: true,
-        primaryKey: true,
       },
       email: {
         type: DataTypes.STRING(50),
@@ -26,14 +29,15 @@ module.exports = (sequelize, DataTypes) => {
     {
       charset: "utf8",
       collate: "utf8_general_ci", // 한글이 저장
+      timestamp: true,
     }
   );
 
-  // User.associate = db => {
-  //   db.User.hasMany(db.Post, { as: "Posts" });
-  //   db.User.hasMany(db.Image);
-  //   //db.User.belongsToMany(db.Post, { through: "Like", as: "Liked" });
-  // };
+  User.associate = (db) => {
+    db.User.hasMany(db.Post);
+    db.User.hasMany(db.Image);
+    //db.User.belongsToMany(db.Post, { through: "Like", as: "Liked" });
+  };
 
   return User;
 };
