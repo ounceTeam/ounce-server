@@ -9,7 +9,7 @@ const router = express.Router();
 */
 router.post("/", async (req, res, next) => {
   try {
-    console.log("@@@@@@@@" + JSON.stringify(req.body));
+    console.log("@@@@@@@@" + JSON.stringify(req.body)); //@@@@ 로깅은 이렇게 하시면 돼요 콘솔창에 뜹니다.
     const newGroup = await db.Group.create({
       name: req.body.name,
       groupCategory: req.body.groupCategory,
