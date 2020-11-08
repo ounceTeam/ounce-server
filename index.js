@@ -1,12 +1,19 @@
 const express = require("express");
 const db = require("./models");
+
 const userAPIRouter = require("./routes/user");
+const postAPIRouter = require("./routes/post");
+const groupsAPIRouter = require("./routes/groups");
+const groupAPIRouter = require("./routes/group");
 
 const app = express();
 app.use(express.json());
 db.sequelize.sync();
 
-app.use("/api/users", userAPIRouter);
+app.use("/users", userAPIRouter);
+app.use("/posts", postAPIRouter);
+app.use("/groups", groupsAPIRouter);
+app.use("/group", groupAPIRouter);
 
 app.listen(3065, () => {
   //9999
