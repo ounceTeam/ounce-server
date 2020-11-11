@@ -33,6 +33,9 @@ router.post("/user", async (req, res, next) => {
   }
 });
 
+/*
+사용자가 그룹에 가입하는 메소드
+*/
 router.post("/:userId/groups/:groupId", async (req, res, next) => {
   try {
     const group = await db.Group.findOne({
