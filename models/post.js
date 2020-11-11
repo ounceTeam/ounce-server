@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT, // 매우 긴 글
         allowNull: false,
       },
+      url: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+      },
     },
     {
       charset: "utf8mb4", //  한글+이모티콘
