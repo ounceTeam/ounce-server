@@ -13,8 +13,10 @@ router.post("/", async (req, res, next) => {
     const newGroup = await db.Group.create({
       name: req.body.name,
       groupCategory: req.body.groupCategory,
+      userId: req.body.userId,
       authTime: req.body.authTime,
       url: req.body.url,
+      peopleSize: 1,
       maxPeopleSize: req.body.maxPeopleSize,
       monday: req.body.monday,
       tuesday: req.body.tuesday,
@@ -23,6 +25,12 @@ router.post("/", async (req, res, next) => {
       friday: req.body.friday,
       saturday: req.body.saturday,
       sunday: req.body.sunday,
+    });
+
+    await db.Group_User.create({
+      groupId: newGroup.id,
+      userId: req.body.userId,
+      userLevel: "owner",
     });
 
     res.json(newGroup);

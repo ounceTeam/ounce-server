@@ -48,8 +48,9 @@ router.post("/:userId/groups/:groupId", async (req, res, next) => {
     }
 
     const newGroup = await db.Group_User.create({
-      GroupId: req.params.groupId,
+      groupId: req.params.groupId,
       userId: req.params.userId,
+      userLevel: "user",
     });
 
     await db.Group.update(

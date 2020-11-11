@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      userLevel: {
+        type: DataTypes.STRING(20),
+        allowNull: true,
+      },
     },
     {
       charset: "utf8mb4", //  한글+이모티콘

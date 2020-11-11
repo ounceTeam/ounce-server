@@ -69,4 +69,8 @@ router.get("/:groupId/posts/:postId", async (req, res, next) => {
   }
 });
 
+/*
+그룹 내 그룹원들 조회
+*/
+
 module.exports = router;
