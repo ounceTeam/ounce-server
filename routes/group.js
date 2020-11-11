@@ -14,6 +14,15 @@ router.post("/", async (req, res, next) => {
       name: req.body.name,
       groupCategory: req.body.groupCategory,
       authTime: req.body.authTime,
+      url: req.body.url,
+      maxPeopleSize: req.body.maxPeopleSize,
+      monday: req.body.monday,
+      tuesday: req.body.tuesday,
+      wednesday: req.body.wednesday,
+      thursday: req.body.thursday,
+      friday: req.body.friday,
+      saturday: req.body.saturday,
+      sunday: req.body.sunday,
     });
 
     res.json(newGroup);

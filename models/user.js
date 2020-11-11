@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      userNo: {
-        type: DataTypes.INTEGER,
+      userId: {
+        type: DataTypes.STRING(100), //userId로 바꿔놨어요
         allowNull: false, // 필수
       },
       email: {

@@ -1,4 +1,6 @@
 const express = require("express");
+const db = require("../models");
+
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -25,6 +27,34 @@ router.post("/user", async (req, res, next) => {
     });
 
     return res.status(200).json(newUser);
+  } catch (e) {
+    console.error(e);
+    return next(e);
+  }
+});
+
+router.post("/:userId/groups/:groupId", async (req, res, next) => {
+  try {
+    const group = await db.Group.findOne({
+      where: {
+        id: req.params.groupId,
+      },
+    });
+    if (group.peopleSize == group.maxPeopleSize) {
+      return res.status(403).send("그룹방 최대인원을 초과하였습니다.");
+    }
+
+    const newGroup = await db.Group_User.create({
+      GroupId: req.params.groupId,
+      userId: req.params.userId,
+    });
+
+    await db.Group.update(
+      { peopleSize: group.peopleSize + 1 },
+      { where: { id: req.params.groupId } }
+    );
+
+    return res.status(200).json(newGroup);
   } catch (e) {
     console.error(e);
     return next(e);
