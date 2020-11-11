@@ -10,6 +10,7 @@ const router = express.Router();
 router.post("/", async (req, res, next) => {
   try {
     console.log("@@@@@@@@" + JSON.stringify(req.body)); //@@@@ 로깅은 이렇게 하시면 돼요 콘솔창에 뜹니다.
+
     const newGroup = await db.Group.create({
       name: req.body.name,
       groupCategory: req.body.groupCategory,
@@ -25,6 +26,18 @@ router.post("/", async (req, res, next) => {
       friday: req.body.friday,
       saturday: req.body.saturday,
       sunday: req.body.sunday,
+    });
+
+    const authRule = req.body.authRule;
+    const dbAuthRule = authRule.map((a) => {
+      if (a) return a;
+    });
+
+    dbAuthRule.map((d) => {
+      db.Group_Notice.create({
+        content: d,
+        groupId: newGroup.id,
+      });
     });
 
     await db.Group_User.create({
