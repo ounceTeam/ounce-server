@@ -8,8 +8,9 @@ router.post("/", async (req, res, next) => {
   try {
     const newPost = await db.Post.create({
       content: req.body.content,
-      UserId: req.body.userId,
-      GroupId: req.body.groupId,
+      url: req.body.url,
+      userId: req.body.userId,
+      groupId: req.body.groupId,
     });
 
     res.json(newPost);

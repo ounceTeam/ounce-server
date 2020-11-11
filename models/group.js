@@ -74,12 +74,12 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
     }
   );
-  Group.associate = (db) => {
-    db.Group.hasMany(db.Post); // 테이블에 UserId 컬럼이 생겨요
-    db.Group.hasMany(db.Image);
-    db.Group.hasMany(db.Group_User);
-    db.Group.hasMany(db.Group_Notice);
-    //db.Post.belongsToMany(db.User, { through: "Like", as: "Likers" });
-  };
+  // Group.associate = (db) => {
+  //   db.Group.hasMany(db.Post); // 테이블에 UserId 컬럼이 생겨요
+  //   db.Group.hasMany(db.Image);
+  //   db.Group.hasMany(db.Group_User);
+  //   db.Group.hasMany(db.Group_Notice);
+  //   //db.Post.belongsToMany(db.User, { through: "Like", as: "Likers" });
+  // };
   return Group;
 };

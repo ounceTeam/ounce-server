@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT, // 매우 긴 글
         allowNull: false,
       },
+      groupId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       charset: "utf8mb4", //  한글+이모티콘
@@ -19,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
     }
   );
-  Group_Notice.associate = (db) => {
-    db.Group_Notice.belongsTo(db.Group);
-  };
+  //   Group_Notice.associate = (db) => {
+  //     db.Group_Notice.belongsTo(db.Group);
+  //   };
   return Group_Notice;
 };

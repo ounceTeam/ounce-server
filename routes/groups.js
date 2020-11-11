@@ -34,4 +34,21 @@ router.get("/:category", async (req, res, next) => {
   }
 });
 
+/*
+그룹 내 전체 게시글 조회
+*/
+router.get("/:groupId/posts", async (req, res, next) => {
+  try {
+    const groups = await db.Post.findAll({
+      where: {
+        groupId: req.params.groupId,
+      },
+    });
+    return res.status(200).json(groups);
+  } catch (e) {
+    console.error(e);
+    return next(e);
+  }
+});
+
 module.exports = router;

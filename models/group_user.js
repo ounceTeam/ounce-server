@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0,
       },
+      groupId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       charset: "utf8mb4", //  한글+이모티콘
@@ -24,8 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
     }
   );
-  Group_User.associate = (db) => {
-    db.Group_User.belongsTo(db.Group);
-  };
+  //   Group_User.associate = (db) => {
+  //     db.Group_User.belongsTo(db.Group);
+  //   };
   return Group_User;
 };

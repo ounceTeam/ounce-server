@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
+      groupId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      userId: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
     },
     {
       charset: "utf8mb4", //  한글+이모티콘
@@ -23,11 +31,11 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
     }
   );
-  Post.associate = (db) => {
-    db.Post.belongsTo(db.User); // 테이블에 UserId 컬럼이 생겨요
-    db.Post.belongsTo(db.Group);
-    db.Post.hasMany(db.Image);
-    //   //db.Post.belongsToMany(db.User, { through: "Like", as: "Likers" });
-  };
+  // Post.associate = (db) => {
+  //   db.Post.belongsTo(db.User); // 테이블에 UserId 컬럼이 생겨요
+  //   db.Post.belongsTo(db.Group);
+  //   db.Post.hasMany(db.Image);
+  //   //   //db.Post.belongsToMany(db.User, { through: "Like", as: "Likers" });
+  // };
   return Post;
 };

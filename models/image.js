@@ -11,6 +11,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(200),
         allowNull: false,
       },
+      groupId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      userId: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      postId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       charset: "utf8",
@@ -18,10 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
     }
   );
-  Image.associate = (db) => {
-    db.Image.belongsTo(db.Post);
-    db.Image.belongsTo(db.Group);
-    db.Image.belongsTo(db.User);
-  };
+  // Image.associate = (db) => {
+  //   db.Image.belongsTo(db.Post);
+  //   db.Image.belongsTo(db.Group);
+  //   db.Image.belongsTo(db.User);
+  // };
   return Image;
 };
