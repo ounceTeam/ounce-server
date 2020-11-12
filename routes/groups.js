@@ -91,6 +91,10 @@ router.post("/:groupId/notices", async (req, res, next) => {
   }
 });
 
+/*
+그룹내 공지사항 조회
+*/
+
 router.get("/:groupId/notices", async (req, res, next) => {
   try {
     const newNotice = await db.Group_Notice.findAll({
