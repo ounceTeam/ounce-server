@@ -108,4 +108,22 @@ router.get("/:groupId/notices", async (req, res, next) => {
   }
 });
 
+/*
+그룹 내 랭킹 조회
+*/
+
+router.get("/:groupId/ranking", async (req, res, next) => {
+  try {
+    const newNotice = await db.Group_User.findAll({
+      where: { groupId: req.params.groupId },
+      order: [["ounce", "DESC"]],
+    });
+
+    res.json(newNotice);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
 module.exports = router;
