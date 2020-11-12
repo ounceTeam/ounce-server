@@ -73,4 +73,35 @@ router.get("/:groupId/posts/:postId", async (req, res, next) => {
 그룹 내 그룹원들 조회
 */
 
+/*
+방장이 그룹 공지사항 등록
+*/
+
+router.post("/:groupId/notices", async (req, res, next) => {
+  try {
+    const newNotice = await db.Group_Notice.create({
+      content: req.body.content,
+      groupId: req.params.groupId,
+    });
+
+    res.json(newNotice);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router.get("/:groupId/notices", async (req, res, next) => {
+  try {
+    const newNotice = await db.Group_Notice.findAll({
+      where: { groupId: req.params.groupId },
+    });
+
+    res.json(newNotice);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
 module.exports = router;
