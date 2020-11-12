@@ -16,6 +16,7 @@ db.Image = require("./image")(sequelize, Sequelize);
 db.Group = require("./group")(sequelize, Sequelize);
 db.Group_User = require("./group_user")(sequelize, Sequelize);
 db.Group_Notice = require("./group_notice")(sequelize, Sequelize);
+db.Group_Ask = require("./group_ask")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

@@ -34,7 +34,7 @@ router.post("/user", async (req, res, next) => {
 });
 
 /*
-사용자가 그룹에 가입하는 메소드
+사용자가 그룹에 가입을 요청하는 메소드 (방장이 수락 하기전 사용자가 요청만)
 */
 router.post("/:userId/groups/:groupId", async (req, res, next) => {
   try {
@@ -47,18 +47,26 @@ router.post("/:userId/groups/:groupId", async (req, res, next) => {
       return res.status(403).send("그룹방 최대인원을 초과하였습니다.");
     }
 
-    const newGroup = await db.Group_User.create({
+    const newAsk = await db.Group_Ask.create({
+      status: "Applying",
       groupId: req.params.groupId,
       userId: req.params.userId,
-      userLevel: "user",
     });
 
-    await db.Group.update(
-      { peopleSize: group.peopleSize + 1 },
-      { where: { id: req.params.groupId } }
-    );
+    console.log("@@@@" + newAsk);
 
-    return res.status(200).json(newGroup);
+    // const newGroup = await db.Group_User.create({
+    //   groupId: req.params.groupId,
+    //   userId: req.params.userId,
+    //   userLevel: "user",
+    // });
+
+    // await db.Group.update(
+    //   { peopleSize: group.peopleSize + 1 },
+    //   { where: { id: req.params.groupId } }
+    // );
+
+    return res.status(200).json(group.name + "방에 가입 신청을 하였습니다");
   } catch (e) {
     console.error(e);
     return next(e);

@@ -74,24 +74,6 @@ router.get("/:groupId/posts/:postId", async (req, res, next) => {
 */
 
 /*
-방장이 그룹 공지사항 등록
-*/
-
-router.post("/:groupId/notices", async (req, res, next) => {
-  try {
-    const newNotice = await db.Group_Notice.create({
-      content: req.body.content,
-      groupId: req.params.groupId,
-    });
-
-    res.json(newNotice);
-  } catch (e) {
-    console.error(e);
-    next(e);
-  }
-});
-
-/*
 그룹내 공지사항 조회
 */
 
