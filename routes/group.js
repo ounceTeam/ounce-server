@@ -1,13 +1,15 @@
 const express = require("express");
 
 const db = require("../models");
-
+const jwtMiddleware = require('../config/jwtMiddleware');
+const jwt = require('jsonwebtoken');
+const secret_config = require('../config/secret');
 const router = express.Router();
 
 /*
     그룹 등록
 */
-router.post("/", async (req, res, next) => {
+router.post("/", jwtMiddleware, async (req, res, next) => {
   try {
     console.log("@@@@@@@@" + JSON.stringify(req.body)); //@@@@ 로깅은 이렇게 하시면 돼요 콘솔창에 뜹니다.
 
@@ -56,7 +58,7 @@ router.post("/", async (req, res, next) => {
 /*
     그룹 아이디 별 상세 그룹 조회
  */
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", jwtMiddleware, async (req, res, next) => {
   try {
     const group = await db.Group.findOne({
       where: {

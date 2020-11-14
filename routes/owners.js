@@ -1,13 +1,15 @@
 const express = require("express");
 const db = require("../models");
-
+const jwtMiddleware = require('../config/jwtMiddleware');
+const jwt = require('jsonwebtoken');
+const secret_config = require('../config/secret');
 const router = express.Router();
 
 /*
 방장이 그룹 공지사항 등록
 */
 
-router.post("/:ownerId/groups/:groupId/notices", async (req, res, next) => {
+router.post("/:ownerId/groups/:groupId/notices", jwtMiddleware, async (req, res, next) => {
   try {
     const newNotice = await db.Group_Notice.create({
       content: req.body.content,
@@ -24,7 +26,7 @@ router.post("/:ownerId/groups/:groupId/notices", async (req, res, next) => {
 /*
 사용자들이 그룹방에 가입요청을 하면 방장이 수락하는 메소드
 */
-router.post("/:ownerId/groups/:groupId/allows", async (req, res, next) => {
+router.post("/:ownerId/groups/:groupId/allows", jwtMiddleware, async (req, res, next) => {
   try {
     const newGroup = await db.Group_User.create({
       groupId: req.params.groupId,
@@ -66,7 +68,7 @@ router.post("/:ownerId/groups/:groupId/allows", async (req, res, next) => {
 그룹방 가입 요청 목록 중 방장이 거절하는 메소드
 */
 
-router.post("/:ownerId/groups/:groupId/deny", async (req, res, next) => {
+router.post("/:ownerId/groups/:groupId/deny", jwtMiddleware, async (req, res, next) => {
   try {
     await db.Group_Ask.destroy({
       where: {
@@ -86,7 +88,7 @@ router.post("/:ownerId/groups/:groupId/deny", async (req, res, next) => {
 그룹방에 가입하려고 신청한 유저들의 목록 조회
 */
 
-router.get("/:ownerId/groups/:groupId/requests", async (req, res, next) => {
+router.get("/:ownerId/groups/:groupId/requests", jwtMiddleware, async (req, res, next) => {
   try {
     const userList = await db.Group_Ask.findAll({
       where: {

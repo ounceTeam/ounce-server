@@ -1,10 +1,28 @@
 const express = require("express");
 const db = require("../models");
+const jwtMiddleware = require('../config/jwtMiddleware');
+const jwt = require('jsonwebtoken');
+const secret_config = require('../config/secret');
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  return res.send("user server get api");
+router.get("/user/:userId", jwtMiddleware, async (req, res) => {
+  try {
+    const User = await db.User.findOne({
+      where: {
+        userId: req.params.userId,
+      },
+    });
+    if (!User) {
+      return res.status(404).send("존재하지 않는 유저입니다.");
+    }
+
+
+    return res.status(200).json(User);
+  } catch (e) {
+    console.error(e);
+    return next(e);
+  }
 });
 
 router.post("/user", async (req, res, next) => {
@@ -13,7 +31,7 @@ router.post("/user", async (req, res, next) => {
   try {
     const exUser = await db.User.findOne({
       where: {
-        userId: req.body.email,
+        userId: req.body.userId,
       },
     });
     if (exUser) {
@@ -21,12 +39,30 @@ router.post("/user", async (req, res, next) => {
     }
 
     const newUser = await db.User.create({
-      email: req.body.email,
+      userId: req.body.userId,
       nickname: req.body.nickname,
       oauthid: req.body.oauthid,
     });
 
-    return res.status(200).json(newUser);
+    //return res.status(200).json(newUser);
+    let token = await jwt.sign(
+        {
+          userId: req.body.userId,
+        }, // 토큰의 내용(payload)
+        secret_config.jwtsecret, // 비밀 키
+        {
+          expiresIn: "365d",
+          subject: "userInfo",
+        } // 유효 시간은 365일
+    );
+    //console.log(token);
+    res.json({
+      jwt: token,
+      info : newUser,
+      isSuccess: true,
+      code: 200,
+      message: "회원가입 성공",
+    });
   } catch (e) {
     console.error(e);
     return next(e);
@@ -36,7 +72,8 @@ router.post("/user", async (req, res, next) => {
 /*
 사용자가 그룹에 가입을 요청하는 메소드 (방장이 수락 하기전 사용자가 요청만)
 */
-router.post("/:userId/groups/:groupId", async (req, res, next) => {
+router.post("/:userId/groups/:groupId", jwtMiddleware, async (req, res, next) => {
+  const {userId} = req.verifiedToken;
   try {
     const group = await db.Group.findOne({
       where: {
