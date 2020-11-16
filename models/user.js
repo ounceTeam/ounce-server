@@ -18,7 +18,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(10),
                 allowNull: false,
             },
-            oauthid: {
+            oauthid: {   // 카카오를 통한 회원가입용 pw기능
+                type: DataTypes.STRING(100),
+                allowNull: true,
+            },
+            password: {   // 일반 회원가입용 pw기능
                 type: DataTypes.STRING(100),
                 allowNull: true,
             },
