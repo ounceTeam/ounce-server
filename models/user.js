@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             oauthid: {
                 type: DataTypes.STRING(100),
-                allowNull: false,
+                allowNull: true,
             },
         },
         {
