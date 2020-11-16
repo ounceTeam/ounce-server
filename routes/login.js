@@ -127,15 +127,7 @@ router.post('/', async (req, res, next) => {
                         });
                         //connection.release();
                     }
-                } else {
-                    return res.json({
-                        code : response.statusCode,
-                        isSuccess : false,
-                        error_message : response.body
-                    });
-                }
-            }
-        );
+
 
 
         //return res.status(200).json(newUser);
