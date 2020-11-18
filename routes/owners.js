@@ -46,7 +46,7 @@ router.post(
 사용자들이 그룹방에 가입요청을 하면 방장이 수락하는 메소드
 */
 router.post(
-  "/:ownerId/groups/:groupId/allows",
+  "/groups/:groupId/allows",
   jwtMiddleware,
   async (req, res, next) => {
     try {
@@ -90,10 +90,7 @@ router.post(
       });
 
       res.json(
-        req.body.userId +
-          " 님이 그룹" +
-          group.name +
-          " 에 가입하는 것을 수락했습니다."
+        req.body.userId + " 님이 그룹" + group.name + " 에 가입 완료 됐습니다."
       );
     } catch (e) {
       console.error(e);
@@ -106,47 +103,43 @@ router.post(
 그룹방 가입 요청 목록 중 방장이 거절하는 메소드
 */
 
-router.post(
-  "/:ownerId/groups/:groupId/deny",
-  jwtMiddleware,
-  async (req, res, next) => {
-    try {
-      const { userId } = req.verifiedToken;
-      console.log(userId);
-      const temp = await db.Group_User.findAll({
-        where: {
-          userId: userId,
-          groupId: req.params.groupId,
-          userLevel: "owner",
-        },
-      });
-      console.log(temp);
+router.post("/groups/:groupId/deny", jwtMiddleware, async (req, res, next) => {
+  try {
+    const { userId } = req.verifiedToken;
+    console.log(userId);
+    const temp = await db.Group_User.findAll({
+      where: {
+        userId: userId,
+        groupId: req.params.groupId,
+        userLevel: "owner",
+      },
+    });
+    console.log(temp);
 
-      if (temp.length == 0) {
-        res.status(403).json("그룹 방장이 아닙니다");
-      }
-
-      await db.Group_Ask.destroy({
-        where: {
-          groupId: req.params.groupId,
-          userId: req.body.userId,
-        },
-      });
-
-      res.json(req.body.userId + " 님이 그룹에 가입하는 것을 거절했습니다.");
-    } catch (e) {
-      console.error(e);
-      return next(e);
+    if (temp.length == 0) {
+      res.status(403).json("그룹 방장이 아닙니다");
     }
+
+    await db.Group_Ask.destroy({
+      where: {
+        groupId: req.params.groupId,
+        userId: req.body.userId,
+      },
+    });
+
+    res.json(req.body.userId + " 님이 그룹에 가입하는 것을 거절했습니다.");
+  } catch (e) {
+    console.error(e);
+    return next(e);
   }
-);
+});
 
 /*
 그룹방에 가입하려고 신청한 유저들의 목록 조회
 */
 
 router.get(
-  "/:ownerId/groups/:groupId/requests",
+  "/groups/:groupId/requests",
   jwtMiddleware,
   async (req, res, next) => {
     try {
