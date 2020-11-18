@@ -4,6 +4,8 @@ const db = require("../models");
 const jwtMiddleware = require("../config/jwtMiddleware");
 const jwt = require("jsonwebtoken");
 const secret_config = require("../config/secret");
+const moment = require("moment");
+
 const router = express.Router();
 
 /*
@@ -55,7 +57,7 @@ router.get("/:groupId/posts", async (req, res, next) => {
         groupId: req.params.groupId,
       },
     });
-
+    console.log(moment().format("YYYY-MM-DD"));
     if (temp == null) {
       groups.unshift({ userLevel: null });
     } else {
@@ -121,6 +123,43 @@ router.get("/:groupId/ranking", async (req, res, next) => {
     });
 
     res.json(newNotice);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+/*
+그룹내 인증 사진 있는 날들 목록 조회
+*/
+router.get("/:groupId/days", async (req, res, next) => {
+  try {
+    let tset = new Set();
+
+    const temp = await db.Post.findAll({
+      where: { groupId: req.params.groupId },
+    });
+
+    if (temp == null) {
+      res.status(200).json([]);
+    } else {
+      temp.forEach((i) => {
+        let { createdAt } = i;
+        createdAt = moment(createdAt).format("YYYY-MM-DD");
+        console.log(createdAt);
+        tset.add(createdAt);
+      });
+    }
+    const setarr = [...tset];
+    res.json(setarr);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router.get("/:groupId/someday", async (req, res, next) => {
+  try {
   } catch (e) {
     console.error(e);
     next(e);
