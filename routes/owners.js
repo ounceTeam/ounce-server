@@ -108,7 +108,7 @@ router.post(
 
 router.post(
   "/:ownerId/groups/:groupId/deny",
-
+  jwtMiddleware,
   async (req, res, next) => {
     try {
       const { userId } = req.verifiedToken;
