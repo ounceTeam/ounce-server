@@ -1,15 +1,15 @@
 const express = require("express");
 
 const db = require("../models");
-const jwtMiddleware = require('../config/jwtMiddleware');
-const jwt = require('jsonwebtoken');
-const secret_config = require('../config/secret');
+const jwtMiddleware = require("../config/jwtMiddleware");
+const jwt = require("jsonwebtoken");
+const secret_config = require("../config/secret");
 const router = express.Router();
 
 /*
     전체 그룹 조회
 */
-router.get("/", jwtMiddleware,async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const groups = await db.Group.findAll({});
     return res.status(200).json(groups);
@@ -22,7 +22,7 @@ router.get("/", jwtMiddleware,async (req, res, next) => {
 /*
     카테고리별 그룹 조회
  */
-router.get("/:category", jwtMiddleware, async (req, res, next) => {
+router.get("/:category", async (req, res, next) => {
   try {
     const groups = await db.Group.findAll({
       where: {
@@ -41,6 +41,14 @@ router.get("/:category", jwtMiddleware, async (req, res, next) => {
 */
 router.get("/:groupId/posts", jwtMiddleware, async (req, res, next) => {
   try {
+    const { userId } = req.verifiedToken;
+    console.log("hererer@@@@" + userId);
+    const user_groups = await db.Group_User.findAll({
+      where: { userId: userId },
+    });
+
+    console.log(user_groups);
+
     const groups = await db.Post.findAll({
       where: {
         groupId: req.params.groupId,
@@ -56,7 +64,7 @@ router.get("/:groupId/posts", jwtMiddleware, async (req, res, next) => {
 /*
 그룹 내 특정 게시글 조회
 */
-router.get("/:groupId/posts/:postId", jwtMiddleware, async (req, res, next) => {
+router.get("/:groupId/posts/:postId", async (req, res, next) => {
   try {
     const groups = await db.Post.findAll({
       where: {
@@ -79,7 +87,7 @@ router.get("/:groupId/posts/:postId", jwtMiddleware, async (req, res, next) => {
 그룹내 공지사항 조회
 */
 
-router.get("/:groupId/notices", jwtMiddleware, async (req, res, next) => {
+router.get("/:groupId/notices", async (req, res, next) => {
   try {
     const newNotice = await db.Group_Notice.findAll({
       where: { groupId: req.params.groupId },
@@ -96,7 +104,7 @@ router.get("/:groupId/notices", jwtMiddleware, async (req, res, next) => {
 그룹 내 랭킹 조회
 */
 
-router.get("/:groupId/ranking", jwtMiddleware, async (req, res, next) => {
+router.get("/:groupId/ranking", async (req, res, next) => {
   try {
     const newNotice = await db.Group_User.findAll({
       where: { groupId: req.params.groupId },

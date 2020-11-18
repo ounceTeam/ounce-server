@@ -1,9 +1,9 @@
 const express = require("express");
 
 const db = require("../models");
-const jwtMiddleware = require('../config/jwtMiddleware');
-const jwt = require('jsonwebtoken');
-const secret_config = require('../config/secret');
+const jwtMiddleware = require("../config/jwtMiddleware");
+const jwt = require("jsonwebtoken");
+const secret_config = require("../config/secret");
 const router = express.Router();
 
 /*
@@ -12,11 +12,11 @@ const router = express.Router();
 router.post("/", jwtMiddleware, async (req, res, next) => {
   try {
     console.log("@@@@@@@@" + JSON.stringify(req.body)); //@@@@ 로깅은 이렇게 하시면 돼요 콘솔창에 뜹니다.
-
+    const { userId } = req.verifiedToken;
     const newGroup = await db.Group.create({
       name: req.body.name,
       groupCategory: req.body.groupCategory,
-      userId: req.body.userId,
+      userId: userId,
       authTime: req.body.authTime,
       url: req.body.url,
       peopleSize: 1,
@@ -44,7 +44,7 @@ router.post("/", jwtMiddleware, async (req, res, next) => {
 
     await db.Group_User.create({
       groupId: newGroup.id,
-      userId: req.body.userId,
+      userId: userId,
       userLevel: "owner",
     });
 
@@ -60,6 +60,19 @@ router.post("/", jwtMiddleware, async (req, res, next) => {
  */
 router.get("/:id", jwtMiddleware, async (req, res, next) => {
   try {
+    const { userId } = req.verifiedToken;
+
+    const group_user = await db.Group_User.findAll({
+      where: {
+        userId: userId,
+        groupId: req.params.id,
+      },
+    });
+    console.log(group_user);
+    if (group_user.length == 0) {
+      res.status(403).json("그룹에 가입 하지 않았습니다.");
+    }
+
     const group = await db.Group.findOne({
       where: {
         id: req.params.id,

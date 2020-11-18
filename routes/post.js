@@ -1,9 +1,9 @@
 const express = require("express");
 
 const db = require("../models");
-const jwtMiddleware = require('../config/jwtMiddleware');
-const jwt = require('jsonwebtoken');
-const secret_config = require('../config/secret');
+const jwtMiddleware = require("../config/jwtMiddleware");
+const jwt = require("jsonwebtoken");
+const secret_config = require("../config/secret");
 const router = express.Router();
 
 /*
@@ -12,20 +12,32 @@ const router = express.Router();
 
 router.post("/", jwtMiddleware, async (req, res, next) => {
   try {
+    const { userId } = req.verifiedToken;
+    const temp = await db.Group_User.findAll({
+      where: {
+        userId,
+        groupId: req.body.groupId,
+      },
+    });
+    console.log(temp);
+    if (temp.length == 0) {
+      res.status(403).json("그룹원이 아닙니다");
+    }
+
     const newPost = await db.Post.create({
       content: req.body.content,
       url: req.body.url,
-      userId: req.body.userId,
+      userId: userId,
       groupId: req.body.groupId,
     });
 
     const group_user = await db.Group_User.findOne({
-      where: { userId: req.body.userId },
+      where: { userId: userId, groupId: req.body.groupId },
     });
 
     await db.Group_User.update(
       { ounce: group_user.ounce + 1 },
-      { where: { userId: req.body.userId } }
+      { where: { userId: userId } }
     );
 
     res.json(newPost);

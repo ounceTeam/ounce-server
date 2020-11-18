@@ -19,7 +19,7 @@ app.use("/groups", groupsAPIRouter);
 app.use("/group", groupAPIRouter);
 app.use("/owners", ownersAPIRouter);
 
-app.listen(3000, () => {
+app.listen(3065, () => {
   //9999
   console.log("server is running on http://localhost:3065");
 });
