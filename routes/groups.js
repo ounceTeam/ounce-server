@@ -41,11 +41,28 @@ router.get("/:category", async (req, res, next) => {
 */
 router.get("/:groupId/posts", async (req, res, next) => {
   try {
+    const userId = req.body.userId;
+
+    const temp = await db.Group_User.findOne({
+      where: {
+        groupId: req.params.groupId,
+        userId: userId,
+      },
+    });
+
     const groups = await db.Post.findAll({
       where: {
         groupId: req.params.groupId,
       },
     });
+
+    if (temp == null) {
+      groups.unshift({ userLevel: null });
+    } else {
+      let { userLevel } = temp;
+      groups.unshift({ userLevel: userLevel });
+    }
+
     return res.status(200).json(groups);
   } catch (e) {
     console.error(e);
