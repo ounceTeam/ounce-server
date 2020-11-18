@@ -58,14 +58,19 @@ router.get("/:groupId/posts", async (req, res, next) => {
       },
     });
     console.log(moment().format("YYYY-MM-DD"));
+
+    let all = {};
+    console.log(all);
+
     if (temp == null) {
-      groups.unshift({ userLevel: null });
+      all.userLevel = null;
     } else {
       let { userLevel } = temp;
-      groups.unshift({ userLevel: userLevel });
+      all.userLevel = userLevel;
     }
+    all.post = groups;
 
-    return res.status(200).json(groups);
+    return res.status(200).json(all);
   } catch (e) {
     console.error(e);
     return next(e);

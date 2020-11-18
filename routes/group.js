@@ -83,4 +83,16 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+router.get("/all/ranking", async (req, res, next) => {
+  try {
+    const newNotice = await db.Group_User.findAll({
+      order: [["ounce", "DESC"]],
+    });
+    res.status(200).json(newNotice);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
 module.exports = router;
