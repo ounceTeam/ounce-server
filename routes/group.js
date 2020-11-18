@@ -58,20 +58,18 @@ router.post("/", jwtMiddleware, async (req, res, next) => {
 /*
     그룹 아이디 별 상세 그룹 조회
  */
-router.get("/:id", jwtMiddleware, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
-    const { userId } = req.verifiedToken;
-
-    const group_user = await db.Group_User.findAll({
-      where: {
-        userId: userId,
-        groupId: req.params.id,
-      },
-    });
-    console.log(group_user);
-    if (group_user.length == 0) {
-      res.status(403).json("그룹에 가입 하지 않았습니다.");
-    }
+    // const group_user = await db.Group_User.findAll({
+    //   where: {
+    //     userId: userId,
+    //     groupId: req.params.id,
+    //   },
+    // });
+    // console.log(group_user);
+    // if (group_user.length == 0) {
+    //   res.status(403).json("그룹에 가입 하지 않았습니다.");
+    // }
 
     const group = await db.Group.findOne({
       where: {
