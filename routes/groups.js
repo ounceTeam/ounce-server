@@ -151,15 +151,31 @@ router.get("/:groupId/days", async (req, res, next) => {
       });
     }
     const setarr = [...tset];
-    res.json(setarr);
+    res.status(200).json(setarr);
   } catch (e) {
     console.error(e);
     next(e);
   }
 });
 
-router.get("/:groupId/someday", async (req, res, next) => {
+router.get("/:groupId/somedate", async (req, res, next) => {
   try {
+    let date = req.body.date;
+    date = moment(date).format("YYYY-MM-DD");
+    console.log(moment(date).format("YYYY-MM-DD"));
+    const posts = await db.Post.findAll({
+      where: {
+        groupId: req.params.groupId,
+      },
+    });
+
+    let cposts = [];
+    posts.forEach((p) => {
+      let tday = moment(p.createdAt).format("YYYY-MM-DD");
+      if (tday == date) cposts.push(p);
+    });
+
+    res.status(200).json(cposts);
   } catch (e) {
     console.error(e);
     next(e);
