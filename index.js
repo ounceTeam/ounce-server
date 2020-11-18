@@ -7,6 +7,7 @@ const postAPIRouter = require("./routes/post");
 const groupsAPIRouter = require("./routes/groups");
 const groupAPIRouter = require("./routes/group");
 const ownersAPIRouter = require("./routes/owners");
+const mypageAPIRouter = require("./routes/mypage");
 
 const app = express();
 app.use(express.json());
@@ -18,6 +19,7 @@ app.use("/posts", postAPIRouter);
 app.use("/groups", groupsAPIRouter);
 app.use("/group", groupAPIRouter);
 app.use("/owners", ownersAPIRouter);
+app.use("/mypage", mypageAPIRouter);
 
 app.listen(3065, () => {
   //9999
