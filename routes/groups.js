@@ -39,16 +39,8 @@ router.get("/:category", async (req, res, next) => {
 /*
 그룹 내 전체 게시글 조회
 */
-router.get("/:groupId/posts", jwtMiddleware, async (req, res, next) => {
+router.get("/:groupId/posts", async (req, res, next) => {
   try {
-    const { userId } = req.verifiedToken;
-    console.log("hererer@@@@" + userId);
-    const user_groups = await db.Group_User.findAll({
-      where: { userId: userId },
-    });
-
-    console.log(user_groups);
-
     const groups = await db.Post.findAll({
       where: {
         groupId: req.params.groupId,
