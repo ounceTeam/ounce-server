@@ -41,14 +41,15 @@ router.get("/:category", async (req, res, next) => {
 /*
 그룹 내 전체 게시글 조회
 */
-router.get("/:groupId/posts", async (req, res, next) => {
+router.get("/:groupId/posts", jwtMiddleware, async (req, res, next) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.verifiedToken;
+    console.log(userId);
 
     const temp = await db.Group_User.findOne({
       where: {
         groupId: req.params.groupId,
-        userId: userId,
+        userId: userId.userId,
       },
     });
 
