@@ -125,6 +125,9 @@ router.post("/kakaouser", async (req, res, next) => {
 */
 router.post("/groups/:groupId", jwtMiddleware, async (req, res, next) => {
   const { userId } = req.verifiedToken;
+  const { nickname } = await db.User.findOne({
+    where: { userId: userId },
+  });
   try {
     const group = await db.Group.findOne({
       where: {
@@ -138,6 +141,7 @@ router.post("/groups/:groupId", jwtMiddleware, async (req, res, next) => {
     const newAsk = await db.Group_Ask.create({
       status: "Applying",
       groupId: req.params.groupId,
+      nickname: nickname,
       userId: userId,
     });
 

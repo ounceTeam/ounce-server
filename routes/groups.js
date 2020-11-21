@@ -53,10 +53,18 @@ router.get("/:groupId/posts", jwtMiddleware, async (req, res, next) => {
       },
     });
 
+    const temp2 = await db.Group_Ask.findOne({
+      where: {
+        groupId: req.params.groupId,
+        userId: userId.userId,
+      },
+    });
+
     const groups = await db.Post.findAll({
       where: {
         groupId: req.params.groupId,
       },
+      order: [["createdAt", "DESC"]],
     });
     console.log(moment().format("YYYY-MM-DD"));
 
@@ -65,6 +73,9 @@ router.get("/:groupId/posts", jwtMiddleware, async (req, res, next) => {
 
     if (temp == null) {
       all.userLevel = null;
+      if (temp2 != null) {
+        all.userLevel = "request";
+      }
     } else {
       let { userLevel } = temp;
       all.userLevel = userLevel;
@@ -164,15 +175,17 @@ router.get("/:groupId/days", async (req, res, next) => {
   }
 });
 
-router.get("/:groupId/somedate", async (req, res, next) => {
+router.get("/:groupId/somedate/:date", async (req, res, next) => {
   try {
-    let date = req.body.date;
+    let date = req.params.date;
+    console.log(date);
     date = moment(date).format("YYYY-MM-DD");
     console.log(moment(date).format("YYYY-MM-DD"));
     const posts = await db.Post.findAll({
       where: {
         groupId: req.params.groupId,
       },
+      order: [["createdAt", "DESC"]],
     });
 
     let cposts = [];
@@ -182,6 +195,23 @@ router.get("/:groupId/somedate", async (req, res, next) => {
     });
 
     res.status(200).json(cposts);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+/*
+그룹방 내 그룹가입원 목록
+*/
+
+router.get("/:groupId/members", async (req, res, next) => {
+  try {
+    const people = await db.Group_User.findAll({
+      where: { groupId: req.params.groupId },
+    });
+
+    res.json(people);
   } catch (e) {
     console.error(e);
     next(e);

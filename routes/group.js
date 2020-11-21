@@ -13,6 +13,11 @@ router.post("/", jwtMiddleware, async (req, res, next) => {
   try {
     console.log("@@@@@@@@" + JSON.stringify(req.body)); //@@@@ 로깅은 이렇게 하시면 돼요 콘솔창에 뜹니다.
     const { userId } = req.verifiedToken;
+    const { nickname } = await db.User.findOne({
+      where: { userId: userId },
+    });
+    console.log("@@@@@@@@@" + nickname);
+
     const newGroup = await db.Group.create({
       name: req.body.name,
       groupCategory: req.body.groupCategory,
@@ -45,6 +50,7 @@ router.post("/", jwtMiddleware, async (req, res, next) => {
     await db.Group_User.create({
       groupId: newGroup.id,
       userId: userId,
+      nickname: nickname,
       userLevel: "owner",
     });
 
@@ -76,6 +82,15 @@ router.get("/:id", async (req, res, next) => {
         id: req.params.id,
       },
     });
+    const temp = await db.Group_User.findOne({
+      where: {
+        groupId: group.id,
+        userLevel: "owner",
+      },
+    });
+    const { nickname } = temp;
+    console.log(group);
+    group.dataValues.ownerNickname = nickname;
     return res.status(200).json(group);
   } catch (e) {
     console.error(e);

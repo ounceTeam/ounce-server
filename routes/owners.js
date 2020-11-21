@@ -51,6 +51,9 @@ router.post(
   async (req, res, next) => {
     try {
       const { userId } = req.verifiedToken;
+      const { nickname } = await db.User.findOne({
+        where: { userId: userId },
+      });
       console.log(userId);
       const temp = await db.Group_User.findAll({
         where: {
@@ -68,6 +71,7 @@ router.post(
       const newGroup = await db.Group_User.create({
         groupId: req.params.groupId,
         userId: req.body.userId,
+        nickname: nickname,
         userLevel: "user",
       });
 
@@ -106,6 +110,7 @@ router.post(
 router.post("/groups/:groupId/deny", jwtMiddleware, async (req, res, next) => {
   try {
     const { userId } = req.verifiedToken;
+
     console.log(userId);
     const temp = await db.Group_User.findAll({
       where: {

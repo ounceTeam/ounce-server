@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0,
       },
+      nickname: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+      },
       groupId: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -32,8 +36,8 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
     }
   );
-  //   Group_User.associate = (db) => {
-  //     db.Group_User.belongsTo(db.Group);
-  //   };
+  //Group_User.associate = (db) => {
+  //db.Group_User.belongsTo(db.User);
+  //};
   return Group_User;
 };

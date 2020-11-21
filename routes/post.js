@@ -13,6 +13,9 @@ const router = express.Router();
 router.post("/", jwtMiddleware, async (req, res, next) => {
   try {
     const { userId } = req.verifiedToken;
+    const { nickname } = await db.User.findOne({
+      where: { userId: userId },
+    });
     const temp = await db.Group_User.findAll({
       where: {
         userId,
@@ -28,6 +31,7 @@ router.post("/", jwtMiddleware, async (req, res, next) => {
       content: req.body.content,
       url: req.body.url,
       userId: userId,
+      nickname: nickname,
       groupId: req.body.groupId,
     });
 
