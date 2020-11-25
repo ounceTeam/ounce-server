@@ -21,7 +21,7 @@ app.use("/group", groupAPIRouter);
 app.use("/owners", ownersAPIRouter);
 app.use("/mypage", mypageAPIRouter);
 
-app.listen(8080, () => {
+app.listen(9000, () => {
   //9999
-  console.log("server is running on http://localhost:3065");
+  console.log("server is running on http://15.164.18.115:9000");
 });
