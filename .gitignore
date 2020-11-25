@@ -2,3 +2,4 @@ node_modules
 /config/secret.js
 /config/config.json
 config
+nom-debug.log
