@@ -52,9 +52,10 @@ router.post(
     try {
       const { userId } = req.verifiedToken;
       const { nickname } = await db.User.findOne({
-        where: { userId: userId },
+        where: { userId: req.body.userId },
       });
       console.log(userId);
+      console.log(nickname);
       const temp = await db.Group_User.findAll({
         where: {
           userId: userId,
